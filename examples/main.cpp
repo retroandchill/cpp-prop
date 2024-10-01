@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include "Property/BasicProperty.h"
+#include "Property/Property.h"
 
 struct ExampleClass {
-    Prop::BasicProperty<int> property;
+    BASIC_PROPERTY(int, property, public, public);
 };
 
 int main() {
