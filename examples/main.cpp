@@ -5,9 +5,22 @@
 struct ExampleClass {
     PROPERTY_META(ExampleClass);
 
-    PROPERTY(int, property, public, public);
-    PROPERTY(int, dynamic, public, public);
+    PROPERTY(int, property, public, DEFAULT_GET, public, DEFAULT_SET);
+    PROPERTY(int, dynamic, public, DEFAULT_GET, public, DEFAULT_SET);
+    PROPERTY(std::string, declared, public, DECLARED_GET, public, DECLARED_SET);
 };
+
+DEFINE_GET(ExampleClass, std::string, declared) {
+    return declared.value;
+}
+
+DEFINE_LVALUE_SET(ExampleClass, std::string, declared) {
+    declared.value = value;
+}
+
+DEFINE_RVALUE_SET(ExampleClass, std::string, declared) {
+    declared.value = std::move(value);
+}
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
@@ -26,6 +39,9 @@ int main() {
     example.dynamic += 2;
     example.dynamic++;
     std::cout << example.dynamic << std::endl;
+
+    example.declared = "Hello, World!";
+    std::cout << *example.declared << std::endl;
 
     return 0;
 }
